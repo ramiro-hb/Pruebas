@@ -1,0 +1,29 @@
+    /* static/styles.css */
+    body {
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
+        color: #333333;
+    }
+
+
+    h1 {
+        color: #333333;
+        font-size: 2.5em;
+        text-align: center;
+        padding: 20px 0;
+    }
+    
+    main {
+        width: 20%; /* Cambia este valor para ajustar el ancho del contenido principal */
+        height: 30%; /* Cambia este valor para ajustar el alto del contenido principal */
+        margin: 0 auto; /* Centra el contenido principal horizontalmente */
+        padding: 20px;
+        background-color: #ffffff; /* Agrega un color de fondo al contenido principal */
+        box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.15); /* Agrega una sombra alrededor del contenido principal */
+    }
+    p {
+        font-size: 1.2em;
+        line-height: 1.6;
+        color: #666666;
+    }
+

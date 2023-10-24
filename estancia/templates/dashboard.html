@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Estilos CSS y otros encabezados -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        canvas {
+            width: 80%;
+            height: auto;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Bienvenido al Dashboard</h1>
+    <p id="valor-sensor">Valor del Sensor: </p>
+    <p id="voltaje">Voltaje: </p>
+    <p id="corriente">Corriente: </p>
+    <button id="historial-btn" onclick="window.location.href='/historial-dashboard'">Historial</button>
+
+
+    <canvas id="grafico"></canvas>
+
+    <script>
+        $(document).ready(function () {
+            var labels = [];
+            var chartData = [];
+            var updateCounter = 0; // Contador para las actualizaciones
+    
+            var ctx = document.getElementById('grafico').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Consumo de Energía',
+                        data: chartData,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                }
+            });
+    
+            function actualizarDatos() {
+                $.ajax({
+                    url: '/obtener_datos',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#valor-sensor').text('Valor del Sensor: ' + data.sensor_data);
+                        $('#voltaje').text('Voltaje: ' + data.voltage + ' V');
+                        $('#corriente').text('Corriente: ' + data.current + ' A');
+    
+                        updateCounter++; // Incrementa el contador
+    
+                        // Solo agrega los datos al gráfico cada 10 actualizaciones
+                        if (updateCounter % 10 == 0) {
+                            chart.data.labels.push(labels.length + 1);
+                            chart.data.datasets[0].data.push(parseFloat(data.current));
+    
+                            if (chart.data.labels.length > 10) {
+                                chart.data.labels.shift();
+                                chart.data.datasets[0].data.shift();
+                            }
+    
+                            chart.update();
+                        }
+                    },
+                    complete: function () {
+                        setTimeout(actualizarDatos, 1000);
+                    }
+                });
+            }
+    
+            actualizarDatos();
+        });
+    </script>
+    
+</body>
+</html>

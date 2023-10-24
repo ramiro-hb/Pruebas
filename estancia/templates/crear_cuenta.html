@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear cuenta</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            width: 300px;
+            margin: 100px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .input-field {
+            margin-bottom: 10px;
+        }
+        .input-field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .input-field input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .submit-btn {
+            margin-top: 20px;
+        }
+
+        .btn-regresar {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #474747;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+    .Iniciar{
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #eb9b2c;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 20px;  
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Crear cuenta</h1>
+        <form action="/registro" method="post">
+            <div class="input-field">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="usuario" name="usuario" required>
+
+            </div>
+            <div class="input-field">
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+            </div>
+            <div class="submit-btn">
+                <input type="submit" class="Iniciar" value="Crear cuenta">
+            </div>
+            <div><a href="/" class="btn-regresar">Regresar</a>
+            </div>
+            
+            
+        </form>
+    </div>
+</body>
+</html>

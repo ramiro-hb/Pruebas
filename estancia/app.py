@@ -3,6 +3,7 @@ import sqlite3
 import os
 import threading
 import serial
+import random
 
 app = Flask(__name__)
 app.config['ENV'] = 'development'
@@ -13,7 +14,7 @@ db_path = os.path.join(os.path.dirname(__file__), 'base_de_datos.db')
 
 db_local = threading.local()
 
-ser = serial.Serial('/dev/tty.usbmodem101', 115200)
+#ser = serial.Serial('/dev/tty.usbmodem101', 115200)
 
 def get_db():
     db = getattr(db_local, 'conn', None)
@@ -97,22 +98,6 @@ def registro():
 def dashboard():
     return render_template('dashboard.html', error=None)
 
-@app.route('/obtener_datos', methods=['GET'])
-def obtener_datos():
-    arduino_data = ser.readline().decode().strip()
-
-    sensor_data, voltage, current = arduino_data.split(',')
-
-    with app.app_context():
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute('''
-            INSERT INTO voltaje (valor) VALUES (?)
-        ''', (voltage,))
-        conn.commit()
-
-    return jsonify(sensor_data=sensor_data, voltage=voltage, current=current)
-
 @app.route('/historial')
 def historial():
     with app.app_context():
@@ -128,6 +113,38 @@ def historial():
 @app.route('/historial-dashboard')
 def historial_dashboard():
     return render_template('historial_dashboard.html')
+
+
+
+def simulate_arduino_data():
+    # Simular datos como voltaje y corriente
+    simulated_voltage = random.uniform(0, 2)  # Ejemplo: un valor aleatorio entre 0 y 2
+    simulated_current = random.uniform(0, 10)   # Ejemplo: un valor aleatorio entre 0 y 10
+    return "Simulated", simulated_voltage, simulated_current
+# Variable para almacenar el último valor simulado
+last_simulated_value = None
+
+@app.route('/obtener_datos', methods=['GET'])
+def obtener_datos():
+    simulate_arduino = True  # Cambiar a False para usar datos reales del Arduino
+
+    if simulate_arduino:
+        sensor_data, voltage, current = simulate_arduino_data()
+    else:
+        arduino_data = ser.readline().decode().strip()
+        sensor_data, voltage, current = arduino_data.split(',')
+
+    with app.app_context():
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO voltaje (valor) VALUES (?)
+        ''', (voltage,))
+        conn.commit()
+
+    return jsonify(sensor_data=sensor_data, voltage=voltage, current=current)
+
+
 
 
 if __name__ == '__main__':

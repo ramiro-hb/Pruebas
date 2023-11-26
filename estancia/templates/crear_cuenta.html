@@ -63,22 +63,25 @@
         <h1 class="title">Crear cuenta</h1>
         <form action="/registro" method="post">
             <div class="input-field">
-                <label for="nombre">Nombre:</label>
+                <label for="usuario">Usuario:</label>
                 <input type="text" id="usuario" name="usuario" required>
-
+                {% for error in form.usuario.errors %}
+                   <span>{{ error }}</span>
+                {% endfor %}
             </div>
             <div class="input-field">
                 <label for="contrasena">Contraseña:</label>
                 <input type="password" id="contrasena" name="contrasena" required>
+                {% for error in form.contrasena.errors %}
+                   <span>{{ error }}</span>
+                {% endfor %}
             </div>
             <div class="submit-btn">
                 <input type="submit" class="Iniciar" value="Crear cuenta">
             </div>
             <div><a href="/" class="btn-regresar">Regresar</a>
             </div>
-            
-            
         </form>
     </div>
-</body>
+ </body>
 </html>
